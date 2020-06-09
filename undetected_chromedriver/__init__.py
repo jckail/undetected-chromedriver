@@ -1,21 +1,5 @@
 #!/usr/bin/env python3
 
-
-"""
-
-         888                                                  888         d8b
-         888                                                  888         Y8P
-         888                                                  888
- .d8888b 88888b.  888d888 .d88b.  88888b.d88b.   .d88b.   .d88888 888d888 888 888  888  .d88b.  888d888
-d88P"    888 "88b 888P"  d88""88b 888 "888 "88b d8P  Y8b d88" 888 888P"   888 888  888 d8P  Y8b 888P"
-888      888  888 888    888  888 888  888  888 88888888 888  888 888     888 Y88  88P 88888888 888
-Y88b.    888  888 888    Y88..88P 888  888  888 Y8b.     Y88b 888 888     888  Y8bd8P  Y8b.     888
- "Y8888P 888  888 888     "Y88P"  888  888  888  "Y8888   "Y88888 888     888   Y88P    "Y8888  888   88888888
-
-by UltrafunkAmsterdam (https://github.com/ultrafunkamsterdam)
-
-"""
-
 import io
 import logging
 import os
@@ -128,7 +112,6 @@ class ChromeDriverManager(object):
     def patch_selenium_webdriver(self_):
         """
         Patches selenium package Chrome, ChromeOptions classes for current session
-
         :return:
         """
         import selenium.webdriver.chrome.service
@@ -144,12 +127,10 @@ class ChromeDriverManager(object):
     def install(self, patch_selenium=True):
         """
         Initialize the patch
-
         This will:
          download chromedriver if not present
          patch the downloaded chromedriver
          patch selenium package if <patch_selenium> is True (default)
-
         :param patch_selenium: patch selenium webdriver classes for Chrome and ChromeDriver (for current python session)
         :return:
         """
@@ -165,7 +146,6 @@ class ChromeDriverManager(object):
     def get_release_version_number(self):
         """
         Gets the latest major version available, or the latest major version of self.target_version if set explicitly.
-
         :return: version string
         """
         path = (
@@ -179,7 +159,6 @@ class ChromeDriverManager(object):
     def fetch_chromedriver(self):
         """
         Downloads ChromeDriver from source and unpacks the executable
-
         :return: on success, name of the unpacked executable
         """
         base_ = self._base
@@ -202,7 +181,6 @@ class ChromeDriverManager(object):
     def patch_binary(self):
         """
         Patches the ChromeDriver binary
-
         :return: False on failure, binary name on success
         """
         if self.__class__.installed:
@@ -210,9 +188,9 @@ class ChromeDriverManager(object):
 
         with io.open(self.executable_path, "r+b") as binary:
             for line in iter(lambda: binary.readline(), b""):
-                if b"cdc_" in line:
+                if b"$cdc_" in line:
                     binary.seek(-len(line), 1)
-                    line = b"  var key = '$azc_abcdefghijklmnopQRstuv_';\n"
+                    line = b"  var key = '$cdc_abcdefghijklmnopQRstuv_';\n"
                     binary.write(line)
                     __IS_PATCHED__ = 1
                     break
@@ -220,6 +198,5 @@ class ChromeDriverManager(object):
                 return False
             return True
 
-
-def install(executable_path=None, target_version=None, *args, **kwargs):
-    ChromeDriverManager(executable_path, target_version, *args, **kwargs).install()
+if __name__ == '__main__':
+    print('xxx')
